@@ -1,0 +1,26 @@
+
+generator client {
+  provider = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role{
+  TRAINER
+  ADMIN
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  login String @unique
+  paswordHash String
+  role Role @default(TRAINER)
+  IsActive Boolean @default(true)
+  CreatedAt DateTime @default(now())
+
+  @@map("users")
+}

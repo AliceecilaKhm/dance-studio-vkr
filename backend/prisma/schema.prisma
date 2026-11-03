@@ -17,10 +17,10 @@ enum Role{
 model User {
   id Int @id @default(autoincrement())
   login String @unique
-  paswordHash String
+  passwordHash String
   role Role @default(TRAINER)
-  IsActive Boolean @default(true)
-  CreatedAt DateTime @default(now())
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
 
   @@map("users")
 }

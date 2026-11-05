@@ -71,6 +71,21 @@ export class UsersService {
     return user;
   }
 
+
+  async findByLogin (login: string){
+    const user = await this.prisma.user.findUnique({
+    where: {login: login},
+    select: {
+      id: true,
+      login: true,
+      passwordHash: true,
+      role: true,
+      isActive: true,
+    },
+  })
+  return user
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

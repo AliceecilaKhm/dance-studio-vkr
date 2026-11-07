@@ -3,8 +3,10 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ParseIntPipe } from '@nestjs/common';
+import { Roles } from '../auth/roles.decorator';
+import { Role } from '../generated/prisma/enums';
 
-
+@Roles(Role.ADMIN)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

@@ -24,3 +24,40 @@ model User {
 
   @@map("users")
 }
+
+enum GroupStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum ChildStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Group {
+  id       Int     @id @default(autoincrement())
+  name     String
+  status   GroupStatus @default(ACTIVE)
+
+  children Child[]
+
+  @@map("groups")
+}
+
+model Child {
+  id         Int       @id @default(autoincrement())
+  groupId    Int
+  lastName   String
+  firstName  String
+  middleName String?
+  birthDate  DateTime? @db.Date
+  heightCm   Int?
+  shoeSize   Decimal?  @db.Decimal(3, 1)
+  status     ChildStatus    @default(ACTIVE)
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Restrict)
+
+  @@index([groupId])
+  @@map("children")
+}

@@ -22,6 +22,8 @@ model User {
   isActive Boolean @default(true)
   createdAt DateTime @default(now())
 
+  trainerId Int?    @unique
+  trainer   Trainer? @relation(fields: [trainerId], references: [id], onDelete: Restrict)
   @@map("users")
 }
 
@@ -41,6 +43,7 @@ model Group {
   status   GroupStatus @default(ACTIVE)
 
   children Child[]
+  trainers GroupTrainer[]
 
   @@map("groups")
 }
@@ -60,4 +63,29 @@ model Child {
 
   @@index([groupId])
   @@map("children")
+}
+
+model Trainer {
+  id             Int     @id @default(autoincrement())
+  lastName       String
+  firstName      String
+  middleName     String?
+  phone          String
+  specialization String
+
+  user User?
+  groups GroupTrainer[]
+  @@map("trainers")
+}
+
+model GroupTrainer {
+  groupId   Int
+  trainerId Int
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  trainer Trainer @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+
+  @@id([groupId, trainerId])
+  @@index([trainerId])
+  @@map("group_trainers")
 }

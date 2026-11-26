@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } from '@nestjs/common';
 import { TrainersService } from './trainers.service';
 import { CreateTrainerDto } from './dto/create-trainer.dto';
 import { UpdateTrainerDto } from './dto/update-trainer.dto';
@@ -24,6 +24,15 @@ export class TrainersController {
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.trainersService.findOne(id);
   }
+
+  @Put(':trainerId/groups/:groupId')
+  @Roles(Role.ADMIN)
+  assignGroup(
+  @Param('trainerId', ParseIntPipe) trainerId: number,
+  @Param('groupId', ParseIntPipe) groupId: number,
+  ) {
+  return this.trainersService.assignGroup(trainerId, groupId);
+  } 
 
   @Roles(Role.ADMIN)
   @Patch(':id')

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put, HttpCode, HttpStatus } from '@nestjs/common';
 import { TrainersService } from './trainers.service';
 import { CreateTrainerDto } from './dto/create-trainer.dto';
 import { UpdateTrainerDto } from './dto/update-trainer.dto';
@@ -33,6 +33,16 @@ export class TrainersController {
   ) {
   return this.trainersService.assignGroup(trainerId, groupId);
   } 
+
+  @Delete(':trainerId/groups/:groupId')
+  @Roles(Role.ADMIN)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  unassignGroup(
+    @Param('trainerId', ParseIntPipe) trainerId: number,
+    @Param('groupId', ParseIntPipe) groupId: number,
+  ) {
+    return this.trainersService.unassignGroup(trainerId, groupId);
+  }
 
   @Roles(Role.ADMIN)
   @Patch(':id')

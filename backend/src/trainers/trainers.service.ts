@@ -70,6 +70,12 @@ export class TrainersService {
   return { trainerId, groupId };
 }
 
+  async unassignGroup(trainerId: number, groupId: number): Promise<void> {
+    await this.prisma.groupTrainer.deleteMany({
+      where: { trainerId, groupId },
+    });
+  }
+
   update(id: number, updateTrainerDto: UpdateTrainerDto) {
     return this.prisma.trainer.update({
       where: { id },

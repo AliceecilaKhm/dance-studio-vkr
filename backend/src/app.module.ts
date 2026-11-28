@@ -8,10 +8,11 @@ import { AuthModule } from './auth/auth.module';
 import { GroupsModule } from './groups/groups.module';
 import { ChildrenModule } from './children/children.module';
 import { TrainersModule } from './trainers/trainers.module';
+import { SchedulesModule } from './schedules/schedules.module';
 
 
 @Module({
-  imports: [PrismaModule, ConfigModule.forRoot({isGlobal: true}), UsersModule, AuthModule, GroupsModule, ChildrenModule, TrainersModule],
+  imports: [PrismaModule, ConfigModule.forRoot({isGlobal: true}), UsersModule, AuthModule, GroupsModule, ChildrenModule, TrainersModule, SchedulesModule],
   controllers: [AppController],
   providers: [AppService],
 })

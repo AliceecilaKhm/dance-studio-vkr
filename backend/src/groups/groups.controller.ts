@@ -4,10 +4,12 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
+import { UpdateGroupDto } from './dto/update-group.dto';
 import { Roles } from '../auth/roles.decorator';
 import { Role } from '../generated/prisma/enums';
 
@@ -29,5 +31,11 @@ export class GroupsController {
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.groupsService.findOne(id);
+  }
+
+  @Patch(':id')
+  @Roles(Role.ADMIN)
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateGroupDto) {
+    return this.groupsService.update(id, dto);
   }
 }

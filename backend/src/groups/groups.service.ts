@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateGroupDto } from './dto/create-group.dto';
+import { UpdateGroupDto } from './dto/update-group.dto';
+import { Prisma } from '../generated/prisma/client';
 
 @Injectable()
 export class GroupsService {
@@ -33,5 +35,20 @@ export class GroupsService {
     }
 
     return group;
+  }
+
+  async update(id: number, dto: UpdateGroupDto) {
+    try {
+      return await this.prisma.group.update({
+        where: { id },
+        data: { name: dto.name, status: dto.status },
+        include: { children: true },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+        throw new NotFoundException('Группа не найдена');
+      }
+      throw error;
+    }
   }
 }

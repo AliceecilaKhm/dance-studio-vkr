@@ -44,6 +44,7 @@ model Group {
 
   children Child[]
   trainers GroupTrainer[]
+  schedules Schedule[]
 
   @@map("groups")
 }
@@ -75,6 +76,7 @@ model Trainer {
 
   user User?
   groups GroupTrainer[]
+  schedules Schedule[]
   @@map("trainers")
 }
 
@@ -88,4 +90,30 @@ model GroupTrainer {
   @@id([groupId, trainerId])
   @@index([trainerId])
   @@map("group_trainers")
+}
+
+enum Weekday {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model Schedule {
+  id        Int      @id @default(autoincrement())
+  groupId   Int
+  trainerId Int
+  weekday   Weekday
+  startTime DateTime @db.Time(0)
+  endTime   DateTime @db.Time(0)
+
+  group   Group   @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  trainer Trainer @relation(fields: [trainerId], references: [id], onDelete: Restrict)
+
+  @@index([groupId, weekday])
+  @@index([trainerId, weekday])
+  @@map("schedules")
 }

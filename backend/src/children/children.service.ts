@@ -38,8 +38,15 @@ export class ChildrenService {
   }
 
   findAll(query: ListChildrenQueryDto = {}) {
+    const words = query.search?.match(/\S+/g) ?? [];
+    const nameConditions = words.map((word) => {
+      const literal = word.replace(/[\\%_]/g, '\\$&');
+      const match = { contains: literal, mode: Prisma.QueryMode.insensitive };
+      return { OR: [{ firstName: match }, { lastName: match }] };
+    });
+
     return this.prisma.child.findMany({
-      where: { groupId: query.groupId, status: query.status },
+      where: { groupId: query.groupId, status: query.status, AND: nameConditions },
       include: { group: true },
     });
   }

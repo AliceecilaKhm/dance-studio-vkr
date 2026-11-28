@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, Max, Min, IsString } from 'class-validator';
 import { ChildStatus } from '../../generated/prisma/enums';
 
 export class ListChildrenQueryDto {
@@ -13,4 +13,8 @@ export class ListChildrenQueryDto {
   @IsOptional()
   @IsEnum(ChildStatus)
   status?: ChildStatus;
+
+  @IsOptional()
+  @IsString()
+  search?: string;
 }
